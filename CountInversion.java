@@ -2,52 +2,51 @@ import java.util.ArrayList;
 
 public class CountInversion {
     private static int merge(int[] arr, int low, int mid, int high) {
-        ArrayList<Integer> temp = new ArrayList<>();
+        ArrayList<Integer> sorted = new ArrayList<>();
         int left = low;
         int right = mid + 1;
 
-        int cnt = 0;
+        int count = 0;
 
         while (left <= mid && right <= high) {
             if (arr[left] <= arr[right]) {
-                temp.add(arr[left]);
+                sorted.add(arr[left]);
                 left++;
             } else {
-                temp.add(arr[right]);
-                cnt += (mid - left + 1);
+                sorted.add(arr[right]);
+                count += (mid - left + 1);
                 right++;
             }
         }
 
         while (left <= mid) {
-            temp.add(arr[left]);
+            sorted.add(arr[left]);
             left++;
         }
 
         while (right <= high) {
-            temp.add(arr[right]);
+            sorted.add(arr[right]);
             right++;
         }
 
         for (int i = low; i <= high; i++) {
-            arr[i] = temp.get(i - low);
+            arr[i] = sorted.get(i - low);
         }
-        return cnt;
+        return count;
     }
 
     public static int mergeSort(int[] arr, int low, int high) {
-        int cnt = 0;
+        int count = 0;
         if (low >= high)
-            return cnt;
+            return count;
         int mid = (low + high) / 2;
-        cnt += mergeSort(arr, low, mid);
-        cnt += mergeSort(arr, mid + 1, high);
-        cnt += merge(arr, low, mid, high);
-        return cnt;
+        count += mergeSort(arr, low, mid);
+        count += mergeSort(arr, mid + 1, high);
+        count += merge(arr, low, mid, high);
+        return count;
     }
 
     public static int numberOfInversions(int[] a, int n) {
-        // Write your code here.
         return mergeSort(a, 0, n - 1);
     }
 }
